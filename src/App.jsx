@@ -1,21 +1,33 @@
-import React from "react";
-
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import React, { useEffect } from "react";
+import axios from "axios";
 import Header from "./components/Header";
 import ResultGrid from "./components/ResultGrid";
 import Search from "./components/Search";
+import useStore from "./useStore";
 
-const queryClient = new QueryClient();
+async function fetchCountries() {
+  try {
+    const response = await axios.get("https://restcountries.com/v3.1/all");
+    return response.data;
+  } catch {
+    return [];
+  }
+}
 
 function App() {
+  const setCountries = useStore((state) => state.setCountries);
+
+  useEffect(async () => {
+    const countries = await fetchCountries();
+
+    setCountries(countries);
+  }, []);
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <Header />
       <Search />
       <ResultGrid />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    </>
   );
 }
 
