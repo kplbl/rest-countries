@@ -1,15 +1,21 @@
 import React from "react";
 
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import Header from "./components/Header";
+import ResultGrid from "./components/ResultGrid";
 import Search from "./components/Search";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div>
+    <QueryClientProvider client={queryClient}>
       <Header />
       <Search />
-      <h3>red also this</h3>
-    </div>
+      <ResultGrid />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
